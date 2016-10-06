@@ -6,8 +6,6 @@ const Message = require('./models/Message');
 
 const server = http.createServer((req, res) => {
   let { url, method } = req;
-  // console.log('url:', url)  //  '/'
-  // console.log('method:', method)  // GET
 
   switch (url) {
     case '/messages':
@@ -16,7 +14,9 @@ const server = http.createServer((req, res) => {
           Message.getAllMessages(res);
           break;
         case 'POST':
-          console.log('create new one')
+          anyBody(req, (err, body) => {
+            Message.createNewMessages(body,res);
+          })
           break;
       }
       break;
@@ -43,10 +43,6 @@ const server = http.createServer((req, res) => {
 
 
 
-  // anyBody(req, (err, body) => {
-  //   console.log('body:', body);
-  //   res.end('ok');
-  // })
 
 
 
