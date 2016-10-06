@@ -3,11 +3,15 @@ const http = require('http');
 const anyBody = require('body/any');
 
 const Message = require('./models/Message');
+const SortMessages = require('./models/SortMessages');
+
+// /messages?sort=author
 
 const server = http.createServer((req, res) => {
   let { url, method } = req;
   let arr = url.split('/');
   let id = arr[2];
+
   switch (url) {
     case '/messages':
       switch (method) {
@@ -33,6 +37,13 @@ const server = http.createServer((req, res) => {
           anyBody(req, (err, body) => {
             Message.updateOneMessage(id, body, res);
           })
+          break;
+      }
+      break;
+    case '/messages?sort=author':
+      switch (method) {
+        case 'GET':
+          SortMessages.sortByName(res);
           break;
       }
       break;
