@@ -6,7 +6,8 @@ const Message = require('./models/Message');
 
 const server = http.createServer((req, res) => {
   let { url, method } = req;
-
+  let arr = url.split('/');
+  let id = arr[2];
   switch (url) {
     case '/messages':
       switch (method) {
@@ -20,10 +21,10 @@ const server = http.createServer((req, res) => {
           break;
       }
       break;
-    case '/messages/:id':
+    case `/messages/${id}`:
       switch (method) {
         case 'GET':
-          console.log('get one')
+          Message.getOneMessage(id, res);
           break;
         case 'DELETE':
           console.log('delete')

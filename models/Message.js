@@ -6,7 +6,7 @@ const uuid = require('uuid');
 
 const Message = {
   getAllMessages: function(res) {
-    let result = 'No messages...';
+    let result = '';
     fs.readFile(dataMsgPath, (err, data) => {
       if (err) console.error;
       let messages;
@@ -17,10 +17,10 @@ const Message = {
       }
       if(messages){
         messages.map(message =>{
-          result = `${message.name} @ ${moment(message.timestamp).format('lll')} say: ${message.content}. \n`;
+          result += `${message.name} @ ${moment(message.timestamp).format('lll')} say: ${message.content}. \n`;
         })
       }
-      res.write(result)
+      res.write(result);
       res.end();
     })
   },
@@ -49,7 +49,24 @@ const Message = {
       });
     });
   },
+  getOneMessage: function(id, res) {
+    fs.readFile(dataMsgPath, (err, data) => {
+      if (err) console.error;
+      let messages;
+      try {
+        messages = JSON.parse(data);
+      } catch(e) {
+        messages = [];
+      }
 
+      let message = messages.filter(msg => {
+        return msg.id === id;
+      })
+      let result = `${message[0].name} @ ${moment(message[0].timestamp).format('lll')} say: ${message[0].content}.`;
+      res.write(result);
+      res.end();
+    });
+  },
 
 };
 
