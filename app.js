@@ -5,8 +5,6 @@ const anyBody = require('body/any');
 const Message = require('./models/Message');
 const SortMessages = require('./models/SortMessages');
 
-// /messages?sort=author
-
 const server = http.createServer((req, res) => {
   let { url, method } = req;
   let arr = url.split('/');
@@ -51,15 +49,7 @@ const server = http.createServer((req, res) => {
       res.statusCode = 404;
       res.end('Not Found');
   }
-
-
-
-
-
-
-
-
-
+  
 });
 
 server.listen(PORT, err => {
