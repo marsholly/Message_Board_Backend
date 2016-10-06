@@ -27,10 +27,10 @@ const server = http.createServer((req, res) => {
           Message.getOneMessage(id, res);
           break;
         case 'DELETE':
-          console.log('delete')
+          Message.removeOneMessage(id, res);
           break;
         case 'PUT':
-          console.log('update')
+          Message.updateOneMessage(id, res);
           break;
       }
       break;

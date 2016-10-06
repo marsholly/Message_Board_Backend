@@ -67,6 +67,32 @@ const Message = {
       res.end();
     });
   },
+  removeOneMessage: function(id, res) {
+    fs.readFile(dataMsgPath, (err, data) => {
+      if (err) console.error;
+      let messages;
+      try {
+        messages = JSON.parse(data);
+      } catch(e) {
+        messages = [];
+      }
+      let newMessages = messages.filter(msg => {
+        return msg.id !== id;
+      })
+
+      fs.writeFile(dataMsgPath, JSON.stringify(newMessages), err => {
+        if(err) console.error;
+      });
+
+      let result = '';
+      newMessages.map(message =>{
+        result += `${message.name} @ ${moment(message.timestamp).format('lll')} say: ${message.content}. \n`;
+      })
+      res.write(result);
+      res.end();
+    });
+  },
+  
 
 };
 
