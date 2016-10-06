@@ -17,7 +17,7 @@ const Message = {
       }
       if(messages){
         messages.map(message =>{
-          result += `${message.name} @ ${moment(message.timestamp).format('lll')} say: ${message.content}. \n`;
+          result += `${message.name} @ ${moment(message.timestamp).format('lll')} say: ${message.content} \n`;
         })
       }
       res.write(result);
@@ -62,7 +62,7 @@ const Message = {
       let message = messages.filter(msg => {
         return msg.id === id;
       })
-      let result = `${message[0].name} @ ${moment(message[0].timestamp).format('lll')} say: ${message[0].content}.`;
+      let result = `${message[0].name} @ ${moment(message[0].timestamp).format('lll')} say: ${message[0].content}`;
       res.write(result);
       res.end();
     });
@@ -86,13 +86,44 @@ const Message = {
 
       let result = '';
       newMessages.map(message =>{
-        result += `${message.name} @ ${moment(message.timestamp).format('lll')} say: ${message.content}. \n`;
+        result += `${message.name} @ ${moment(message.timestamp).format('lll')} say: ${message.content} \n`;
       })
       res.write(result);
       res.end();
     });
   },
-  
+  updateOneMessage: function(id, body, res) {
+    fs.readFile(dataMsgPath, (err, data) => {
+      if (err) console.error;
+      let messages;
+      try {
+        messages = JSON.parse(data);
+      } catch(e) {
+        messages = [];
+      }
+      let index = messages.findIndex(msg => {
+        return msg.id === id;
+      })
+      let updateMessage = {
+        id,
+        name: body.name,
+        content: body.content,
+        timestamp: Date.now()
+      }
+      messages[index] = updateMessage;
+
+      fs.writeFile(dataMsgPath, JSON.stringify(messages), err => {
+        if(err) console.error;
+      });
+
+      let result = '';
+      messages.map(message =>{
+        result += `${message.name} @ ${moment(message.timestamp).format('lll')} say: ${message.content} \n`;
+      })
+      res.write(result);
+      res.end();
+    });
+  }
 
 };
 

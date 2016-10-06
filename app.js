@@ -30,7 +30,9 @@ const server = http.createServer((req, res) => {
           Message.removeOneMessage(id, res);
           break;
         case 'PUT':
-          Message.updateOneMessage(id, res);
+          anyBody(req, (err, body) => {
+            Message.updateOneMessage(id, body, res);
+          })
           break;
       }
       break;
